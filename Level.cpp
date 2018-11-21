@@ -1,6 +1,7 @@
 //project includes
 #include "Level.h"
 #include "Framework/AssetManager.h"
+#include "Wall.h"
 
 //library includes
 #include <iostream>
@@ -9,8 +10,8 @@
 Level::Level()
 	:m_CellSize(64.0f)
 	,m_CurrentLevel(0)
-	, m_Background()
-
+	,m_Background()
+	,m_Contents()
 {
 	LoadLevel(1);
 }
@@ -27,14 +28,28 @@ void Level::Draw(sf::RenderTarget& _Target)
 	_Target.setView(Camera);
 
 	// TODO Draw game objects
-	for (int Y = 0; Y < m_Background.size(); ++Y)
+	for (int y = 0; y < m_Background.size(); ++y)
 	{
-		for (int X = 0; X < m_Background[Y].size(); ++X)
+		for (int x = 0; x < m_Background[y].size(); ++x)
 		{
-			_Target.draw(m_Background[Y][X]);
+			_Target.draw(m_Background[y][x]);
 		}
 	}
 
+	//draw grid objects
+	//Y = rows
+	for (int Y = 0; Y < m_Contents.size(); ++Y)
+	{
+		//X = Cells
+		for (int X = 0; X < m_Contents[Y].size(); ++X)
+		{
+			//Z = stickoutty(GridObjects)
+			for (int Z = 0; Z < m_Contents[Y][X].size(); ++Z)
+			{
+				m_Contents[Y][X][Z]->Draw(_Target);
+			}
+		}
+	}
 
 	//TODO Adjust camera as needed
 
@@ -53,11 +68,25 @@ void Level::LoadLevel(int _LevelToLoad)
 	//Clean up the old level
 
 	//Delete any data already in the level
-	//TODO
+	
+	//Y = rows
+	for (int Y = 0; Y < m_Contents.size(); ++ Y)
+	{
+		//X = Cells
+		for (int X = 0; X <  m_Contents[Y].size(); ++X)
+		{	
+			//Z = stickoutty(GridObjects)
+			for (int Z = 0; Z < m_Contents[Z].size(); ++Z)
+			{
+				delete m_Contents[X][Y][Z];
+			}
+		}
+	}
 	
 	//clear out our lists
 	m_Background.clear();
-	   	  
+	m_Contents.clear();
+
 	//set the current level
 	m_CurrentLevel = _LevelToLoad;
 
@@ -82,6 +111,7 @@ void Level::LoadLevel(int _LevelToLoad)
 
 	//Create the first row in our grid
 	m_Background.push_back(std::vector<sf::Sprite>());
+	m_Contents.push_back(std::vector< std::vector<GridObject*> >());
 
 	// read each character one by one from the file...
 	char ch;
@@ -89,6 +119,7 @@ void Level::LoadLevel(int _LevelToLoad)
 	//if successful, execute body of loop
 	//the "noskipws" means our input from the fill will include
 	// the white space(spaces and new lines)
+
 	while (inFile>> std::noskipws >> ch)
 	{
 		//perform actions based on what character was read in
@@ -104,6 +135,7 @@ void Level::LoadLevel(int _LevelToLoad)
 
 			//Create a new row in our grid
 			m_Background.push_back(std::vector<sf::Sprite>());
+			m_Contents.push_back(std::vector< std::vector<GridObject*> >());
 		}
 		else
 		{
@@ -112,10 +144,21 @@ void Level::LoadLevel(int _LevelToLoad)
 			m_Background[Y].push_back(sf::Sprite(AssetManager::GetTexture("graphics/ground.png")));
 			m_Background[Y][X].setPosition(X * m_CellSize, Y * m_CellSize);
 
+			//create an empty vector for our grid contents in this cell
+			m_Contents[Y].push_back(std::vector<GridObject*>());
+
 			 if (ch == '-')
 			{
 				// do nothing - empty space
 			}
+			 else if (ch =='W')
+			 {
+				 Wall* wall = new Wall();
+				 wall->SetLevel(this);
+				 wall->SetGridPosition(X, Y);
+				 m_Contents[Y][X].push_back(wall);
+
+			 }
 			else
 			{
 				std::cerr << "unrecognised character in level file: " << ch;
@@ -136,4 +179,9 @@ void Level::ReloadLevel()
 void Level::LoadNextLevel()
 {
 	LoadLevel(m_CurrentLevel + 1);
+}
+
+float Level::GetCellSize()
+{
+	return m_CellSize;
 }
