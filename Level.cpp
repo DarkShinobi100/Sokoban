@@ -20,6 +20,9 @@ void Level::Draw(sf::RenderTarget& _Target)
 	//create and update camera
 	sf::View Camera = _Target.getDefaultView();
 
+	//adjust camera as needed
+	Camera.setCenter(m_Background[0].size()* m_CellSize/2 ,m_Background.size()*m_CellSize/2);
+
 	// Draw game world to the window
 	_Target.setView(Camera);
 
