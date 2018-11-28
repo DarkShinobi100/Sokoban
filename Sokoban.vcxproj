@@ -132,6 +132,7 @@
     <ClCompile Include="GridObject.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StorageObject.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="Framework\TextObject.h" />
     <ClInclude Include="GridObject.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="StorageObject.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
