@@ -3,6 +3,7 @@
 #include "Framework/AssetManager.h"
 #include "Wall.h"
 #include "StorageObject.h"
+#include "Player.h"
 
 //library includes
 #include <iostream>
@@ -167,6 +168,15 @@ void Level::LoadLevel(int _LevelToLoad)
 				 storageObject->SetLevel(this);
 				 storageObject->SetGridPosition(x, y);
 				 m_Contents[y][x].push_back(storageObject);
+
+			 }
+			 else if (ch == 'P')
+			 {
+				 //if it is a Player
+				 Player* player = new Player();
+				 player->SetLevel(this);
+				 player->SetGridPosition(x, y);
+				 m_Contents[y][x].push_back(player);
 
 			 }
 			else
