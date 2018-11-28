@@ -39,15 +39,15 @@ void Level::Draw(sf::RenderTarget& _Target)
 
 	//draw grid objects
 	//Y = rows
-	for (int Y = 0; Y < m_Contents.size(); ++Y)
+	for (int y = 0; y < m_Contents.size(); ++y)
 	{
 		//X = Cells
-		for (int X = 0; X < m_Contents[Y].size(); ++X)
+		for (int x = 0; x < m_Contents[y].size(); ++x)
 		{
 			//Z = stickoutty(GridObjects)
-			for (int Z = 0; Z < m_Contents[Y][X].size(); ++Z)
+			for (int z = 0; z < m_Contents[y][x].size(); ++z)
 			{
-				m_Contents[Y][X][Z]->Draw(_Target);
+				m_Contents[y][x][z]->Draw(_Target);
 			}
 		}
 	}
@@ -71,15 +71,15 @@ void Level::LoadLevel(int _LevelToLoad)
 	//Delete any data already in the level
 	
 	//Y = rows
-	for (int Y = 0; Y < m_Contents.size(); ++ Y)
+	for (int y = 0; y < m_Contents.size(); ++ y)
 	{
 		//X = Cells
-		for (int X = 0; X <  m_Contents[Y].size(); ++X)
+		for (int x = 0; x <  m_Contents[y].size(); ++x)
 		{	
 			//Z = stickoutty(GridObjects)
-			for (int Z = 0; Z < m_Contents[Z].size(); ++Z)
+			for (int z = 0; z < m_Contents[z].size(); ++z)
 			{
-				delete m_Contents[X][Y][Z];
+				delete m_Contents[x][y][z];
 			}
 		}
 	}
@@ -106,9 +106,9 @@ void Level::LoadLevel(int _LevelToLoad)
 
 	}
 
-	// set the starting X and Y coordinates used to position level objects in our new grid system
-	int X = 0.0f;
-	int Y = 0.0f;
+	// set the starting x and y coordinates used to position level objects in our new grid system
+	int x = 0.0f;
+	int y = 0.0f;
 
 	//Create the first row in our grid
 	m_Background.push_back(std::vector<sf::Sprite>());
@@ -126,12 +126,12 @@ void Level::LoadLevel(int _LevelToLoad)
 		//perform actions based on what character was read in
 		if (ch == ' ')
 		{
-			X += 1;
+			x += 1;
 		}
 		else if (ch == '\n')
 		{
-			++Y;
-			X = 0;
+			++y;
+			x = 0;
 
 
 			//Create a new row in our grid
@@ -142,11 +142,11 @@ void Level::LoadLevel(int _LevelToLoad)
 		{
 			//this is going to be some object(or empty space),so we need a background
 			//create background sprite
-			m_Background[Y].push_back(sf::Sprite(AssetManager::GetTexture("graphics/ground.png")));
-			m_Background[Y][X].setPosition(X * m_CellSize, Y * m_CellSize);
+			m_Background[y].push_back(sf::Sprite(AssetManager::GetTexture("graphics/ground.png")));
+			m_Background[y][x].setPosition(x * m_CellSize, y * m_CellSize);
 
 			//create an empty vector for our grid contents in this cell
-			m_Contents[Y].push_back(std::vector<GridObject*>());
+			m_Contents[y].push_back(std::vector<GridObject*>());
 
 			 if (ch == '-')
 			{
@@ -156,8 +156,8 @@ void Level::LoadLevel(int _LevelToLoad)
 			 {
 				 Wall* wall = new Wall();
 				 wall->SetLevel(this);
-				 wall->SetGridPosition(X, Y);
-				 m_Contents[Y][X].push_back(wall);
+				 wall->SetGridPosition(x, y);
+				 m_Contents[y][x].push_back(wall);
 
 			 }
 			 else if (ch == 'O')
@@ -165,8 +165,8 @@ void Level::LoadLevel(int _LevelToLoad)
 				 //if it is a storage Object
 				 StorageObject* storageObject = new StorageObject();
 				 storageObject->SetLevel(this);
-				 storageObject->SetGridPosition(X, Y);
-				 m_Contents[Y][X].push_back(storageObject);
+				 storageObject->SetGridPosition(x, y);
+				 m_Contents[y][x].push_back(storageObject);
 
 			 }
 			else
