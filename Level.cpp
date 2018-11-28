@@ -65,6 +65,23 @@ void Level::Update(sf::Time _FrameTime)
 	//TODO
 }
 
+void Level::Input(sf::Event _GameEvent)
+{
+	//Y = rows
+	for (int y = 0; y < m_Contents.size(); ++y)
+	{
+		//X = Cells
+		for (int x = 0; x < m_Contents[y].size(); ++x)
+		{
+			//Z = stickoutty(GridObjects)
+			for (int z = 0; z < m_Contents[y][x].size(); ++z)
+			{
+				m_Contents[y][x][z]->Input(_GameEvent);
+			}
+		}
+	}
+}
+
 void Level::LoadLevel(int _LevelToLoad)
 {
 	//Clean up the old level
@@ -204,4 +221,44 @@ void Level::LoadNextLevel()
 float Level::GetCellSize()
 {
 	return m_CellSize;
+}
+
+bool Level::MoveObjectTo(GridObject* _ToMove, sf::Vector2i _TargetPos)
+{
+	//don't trust other code make sure _ToMove is a valid pointer 
+	//also check our target position is within the grid
+	if (_ToMove != nullptr
+		&& _TargetPos.y >= 0 && _TargetPos.y < m_Contents.size()
+		&& _TargetPos.x >= 0 && _TargetPos.x < m_Contents[_TargetPos.y].size())
+	{
+		//get the current position of the grid object
+		sf::Vector2i OldPos = _ToMove->GetGridPosition();
+
+		// find the object in the list
+		//using an iterator and the "find" method
+		auto it = std::find(m_Contents[OldPos.y][OldPos.x].begin(),
+							m_Contents[OldPos.y][OldPos.x].end(),
+							_ToMove);
+
+		//if we found the object at this location,
+		//it will NOT equal the end of the vector
+		if (it != m_Contents[OldPos.y][OldPos.x].end())
+		{
+			//we found the object!
+
+			//remove it from the old position
+			m_Contents[OldPos.y][OldPos.x].erase(it);
+
+			//add it to it's new position
+			m_Contents[_TargetPos.y][_TargetPos.x].push_back(_ToMove);
+
+			//tell the object it's new position
+			_ToMove->SetGridPosition(_TargetPos);
+
+			//return success
+			return true;
+		}
+	}
+	//return failure
+	return false;
 }

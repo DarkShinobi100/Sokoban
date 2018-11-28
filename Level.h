@@ -14,11 +14,14 @@ public:
 
 	void Draw(sf::RenderTarget& _Target);
 	void Update(sf::Time _FrameTime);
+	void Input(sf::Event _GameEvent);
 
 	void LoadLevel(int _LevelToLoad);
 	void ReloadLevel();
 	void LoadNextLevel();
 	float GetCellSize();
+	bool MoveObjectTo(GridObject* _ToMove, sf::Vector2i _TargetPos);
+
 
 private:
 

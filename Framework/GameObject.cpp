@@ -11,7 +11,13 @@ void GameObject::Draw(sf::RenderTarget& _Target)
 {
 
 }
+
 void GameObject::Update(sf::Time _FrameTime)
+{
+
+}
+
+void GameObject::Input(sf::Event _GameEvent)
 {
 
 }
