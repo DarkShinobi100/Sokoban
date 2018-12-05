@@ -7,9 +7,12 @@ Player::Player()
 	: GridObject()
 	, m_PendingMove(0,0)
 	, m_WalkSound()
+	, m_BumpSound()
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
 	m_WalkSound.setBuffer(AssetManager::GetSoundBuffer("audio/footstep1.ogg"));
+	m_BumpSound.setBuffer(AssetManager::GetSoundBuffer("audio/bump.wav"));
+
 }
 
 void Player::Input(sf::Event _GameEvent)
@@ -100,6 +103,11 @@ bool Player::AttemptMove(sf::Vector2i _Direction)
 		{
 			blocked = true;
 		}
+	}
+
+	if (blocked == true)
+	{
+		m_BumpSound.play();
 	}
 
 	//if empty, move there
