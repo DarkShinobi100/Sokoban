@@ -27,24 +27,32 @@ void Player::Input(sf::Event _GameEvent)
 			// it was W that was pressed
 			//move up
 			m_PendingMove = sf::Vector2i(0, -1);
+			m_Sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandUp.png"));
+
 		}
 		else if (_GameEvent.key.code == sf::Keyboard::A || _GameEvent.key.code == sf::Keyboard::Left)
 		{
 			// it was A that was pressed
 			//move left
 			m_PendingMove = sf::Vector2i(-1, 0);
+			m_Sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandLeft.png"));
+
 		}
 		else if (_GameEvent.key.code == sf::Keyboard::S || _GameEvent.key.code == sf::Keyboard::Down)
 		{
 			// it was S that was pressed
 			//move down
 			m_PendingMove = sf::Vector2i(0, 1);
+			m_Sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
+
 		}
 		else if (_GameEvent.key.code == sf::Keyboard::D || _GameEvent.key.code == sf::Keyboard::Right)
 		{
 			// it was D that was pressed
 			//move Right
 			m_PendingMove = sf::Vector2i(1, 0);
+			m_Sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandRight.png"));
+
 		}
 	}
 }
