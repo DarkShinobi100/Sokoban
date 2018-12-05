@@ -2,7 +2,6 @@
 #include "Level.h"
 #include "Framework/AssetManager.h"
 #include "Wall.h"
-#include "StorageObject.h"
 #include "Player.h"
 
 //library includes
@@ -176,15 +175,6 @@ void Level::LoadLevel(int _LevelToLoad)
 				 wall->SetLevel(this);
 				 wall->SetGridPosition(x, y);
 				 m_Contents[y][x].push_back(wall);
-
-			 }
-			 else if (ch == 'O')
-			 {
-				 //if it is a storage Object
-				 StorageObject* storageObject = new StorageObject();
-				 storageObject->SetLevel(this);
-				 storageObject->SetGridPosition(x, y);
-				 m_Contents[y][x].push_back(storageObject);
 
 			 }
 			 else if (ch == 'P')
