@@ -18,10 +18,9 @@ private:
 
 	bool AttemptMove(sf::Vector2i _Direction);
 
-
 	//Data
 private:
 
 	sf::Vector2i m_PendingMove;
-
+	sf::Sound m_WalkSound;
 };

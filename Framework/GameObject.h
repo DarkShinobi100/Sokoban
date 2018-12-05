@@ -2,6 +2,7 @@
 
 //library includes
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class GameObject
 {
