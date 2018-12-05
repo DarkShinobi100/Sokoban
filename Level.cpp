@@ -61,7 +61,19 @@ void Level::Draw(sf::RenderTarget& _Target)
 
 void Level::Update(sf::Time _FrameTime)
 {
-	//TODO
+	//Y = rows
+	for (int y = 0; y < m_Contents.size(); ++y)
+	{
+		//X = Cells
+		for (int x = 0; x < m_Contents[y].size(); ++x)
+		{
+			//Z = stickoutty(GridObjects)
+			for (int z = 0; z < m_Contents[y][x].size(); ++z)
+			{
+				m_Contents[y][x][z]->Update(_FrameTime);
+			}
+		}
+	}
 }
 
 void Level::Input(sf::Event _GameEvent)
