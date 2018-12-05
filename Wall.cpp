@@ -6,4 +6,5 @@ Wall::Wall()
 	: GridObject()
 {
 	m_Sprite.setTexture(AssetManager::GetTexture("graphics/wall.png"));
+	m_BlocksMovement = true;
 }

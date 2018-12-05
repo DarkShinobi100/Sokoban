@@ -17,6 +17,7 @@ public:
 	void SetGridPosition(sf::Vector2i _NewPosition);
 	//overloaded function
 	void SetGridPosition(int _x,int _y);
+	bool GetBlockedMovement();
 
 	void SetLevel(Level* _NewLevel);
 
@@ -26,6 +27,6 @@ protected:
 
 	sf::Vector2i m_GridPosition;
 	Level* m_Level;
-
+	bool m_BlocksMovement;
 
 };

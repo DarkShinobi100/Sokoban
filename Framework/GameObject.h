@@ -24,5 +24,4 @@ public:
 protected:
 	bool m_active;
 
-
 };
