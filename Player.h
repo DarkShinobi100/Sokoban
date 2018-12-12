@@ -24,4 +24,5 @@ private:
 	sf::Vector2i m_PendingMove;
 	sf::Sound m_WalkSound;
 	sf::Sound m_BumpSound;
+	sf::Sound m_PushSound;
 };
