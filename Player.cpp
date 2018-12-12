@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Framework/AssetManager.h"
 #include "Level.h"
+#include "Box.h"
 
 Player::Player()
 	: GridObject()
@@ -97,11 +98,13 @@ bool Player::AttemptMove(sf::Vector2i _Direction)
 
 	// check if any of those objects block movement
 	bool blocked = false;
+	GridObject* blocker = nullptr;
 	for (int i = 0; i < TargetCellContents.size(); ++i)
 	{
 		if (TargetCellContents[i]->GetBlockedMovement() == true)
 		{
 			blocked = true;
+			blocker = TargetCellContents[i];
 		}
 	}
 
@@ -114,6 +117,29 @@ bool Player::AttemptMove(sf::Vector2i _Direction)
 	if (blocked == false)
 	{
 		return m_Level->MoveObjectTo(this, TargetPos);
+	}
+	else
+	{
+		//we were blocked!
+		//can we push whatever blocked us?
+		//do a dynamic cast to a box to see if we can push it
+		Box* pushableBox = dynamic_cast<Box*>(blocker);
+		
+		//if so(the thing is a box(not nullptr))
+		if (pushableBox != nullptr)
+		{
+			//if so attempt to push
+			bool pushSucceeded = pushableBox->AttemptPush(_Direction);
+			//if push succeeded
+
+				if (pushSucceeded == true)
+				{
+					//move to new spot(where blocker was)
+					return m_Level->MoveObjectTo(this, TargetPos);
+				}
+			
+		}
+
 	}
 	//if movement is blocked, do nothing, return false
 	return false;

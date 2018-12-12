@@ -9,6 +9,5 @@ class Box : public GridObject
 public:
 	Box();
 
-
-	//todo attempt to push function
+	bool AttemptPush(sf::Vector2i _direction);
 };
