@@ -11,6 +11,8 @@ public:
 
 	bool AttemptPush(sf::Vector2i _direction);
 
+	bool GetStored();
+
 private:
 
 	bool m_Stored;

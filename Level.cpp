@@ -13,10 +13,12 @@
 Level::Level()
 	:m_CellSize(64.0f)
 	,m_CurrentLevel(0)
+	,m_PendingLevel(0)
 	,m_Background()
 	,m_Contents()
 {
 	LoadLevel(1);
+	m_winSound.setBuffer(AssetManager::GetSoundBuffer("audio/victory.ogg"));
 }
 
 void Level::Draw(sf::RenderTarget& _Target)
@@ -76,6 +78,14 @@ void Level::Update(sf::Time _FrameTime)
 			}
 		}
 	}
+	//load the next level if there is a pending level
+	if (m_PendingLevel != 0)
+	{
+	//load it
+		LoadLevel(m_PendingLevel);
+	//remove pending level
+		m_PendingLevel = 0;
+	}
 }
 
 void Level::Input(sf::Event _GameEvent)
@@ -108,9 +118,9 @@ void Level::LoadLevel(int _LevelToLoad)
 		for (int x = 0; x <  m_Contents[y].size(); ++x)
 		{	
 			//Z = stickoutty(GridObjects)
-			for (int z = 0; z < m_Contents[z].size(); ++z)
+			for (int z = 0; z < m_Contents[y][x].size(); ++z)
 			{
-				delete m_Contents[x][y][z];
+				delete m_Contents[y][x][z];
 			}
 		}
 	}
@@ -306,4 +316,54 @@ std::vector<GridObject* > Level::GetObjectAt(sf::Vector2i _TargetPos)
 	//(Default constructor)
 	return std::vector<GridObject*>();
 
+}
+
+bool Level::CheckComplete()
+{
+	//Loop through and check all boxes to see if they are stored
+	//Y = rows
+	for (int y = 0; y < m_Contents.size(); ++y)
+	{
+		//X = Cells
+		for (int x = 0; x < m_Contents[y].size(); ++x)
+		{
+			//Z = stickoutty(GridObjects)
+			for (int z = 0; z < m_Contents[y][x].size(); ++z)
+			{
+				//current object in the loop we are examining
+				GridObject* thisObject = m_Contents[y][x][z];
+
+				//check if it is a box via dynamic cast
+				Box* boxObject = dynamic_cast<Box*>(thisObject);
+				if (boxObject != nullptr)
+				{
+					//it WAS a box!
+
+					//is it stored?
+					if (boxObject->GetStored() == false)
+					{
+						//NOT stored
+
+						//any single box being unstored means the whole level is NOT complete
+						return false;
+					}
+				}
+
+			}
+		}
+	}
+
+	// all boxes were stpred none are Not stored
+	//so we completed the level!
+
+	// play victory music
+	m_winSound.play();
+
+	//queue the next level to load during the next update
+	//if you do it immidately, 
+	//there is an access violation due to update still running
+	m_PendingLevel = m_CurrentLevel + 1;
+
+	// the level is complete so return true
+	return true;
 }

@@ -74,6 +74,9 @@ bool Box::AttemptPush(sf::Vector2i _direction)
 				//change sprite
 				m_Sprite.setTexture(AssetManager::GetTexture("graphics/boxStored.png"));
 				m_StoredSound.play();
+				
+				//check if the level is complete
+				m_Level->CheckComplete();
 			}
 			else
 			{
@@ -86,4 +89,9 @@ bool Box::AttemptPush(sf::Vector2i _direction)
 	}
 	//if movement is blocked, do nothing, return false
 	return false;
+}
+
+bool Box::GetStored()
+{
+	return m_Stored;
 }
