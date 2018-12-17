@@ -6,5 +6,5 @@ W O - - W W W W W H C - - W
 W - - C W - - - W - H C - W 
 W - - C W W W W W - - - - W 
 W - K - - - - P - - - B - W 
-W - - - - H H H B - - - H W 
+W - - - - H H H - - - - H W 
 W W W W W W W W W W W W W W 
