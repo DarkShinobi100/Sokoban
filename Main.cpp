@@ -33,6 +33,10 @@ int main()
 	//Create the game level
 	Level OurLevel;
 
+	//setup music
+	sf::Sound m_BGM;
+	m_BGM.setBuffer(AssetManager::GetSoundBuffer("audio/music.ogg"));
+
 	// -----------------------------------------------
 	// Game Loop
 	// -----------------------------------------------
@@ -41,12 +45,12 @@ int main()
 		// -----------------------------------------------
 		// Input Section
 		// -----------------------------------------------
-
 		// Check all events since the last frame and process 
 		// each one until there are no more
 		sf::Event gameEvent;
 		while (gameWindow.pollEvent(gameEvent))
 		{
+
 			// TODO: Pass event to input objects
 
 			OurLevel.Input(gameEvent);
